@@ -28,9 +28,9 @@ cc.Class({
        
     },
     
-    onOtherFormWillShow(){},
+    onOtherFormWillShow(formModel){},
     
-    onOtherFormHide(){},
+    onOtherFormHide(formModel){},
 
     // update (dt) {},
 });
