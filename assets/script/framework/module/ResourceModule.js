@@ -87,8 +87,6 @@ cc.Class({
     _getDirUrlsAndUUids(path,type){
         let urls = [];
         let uuids = cc.loader._resources.getUuidArray(path, type, urls);
-        // console.log('所有贴图路径:',urls);
-        // console.log('所有贴图uuid:',uuids);
         return {
             urls:urls,
             uuids:uuids,
