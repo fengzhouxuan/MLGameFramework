@@ -42,38 +42,8 @@ cc.Class({
         this.UIFormStack = [];
         this.cachedUIForms = [];
 
-        this.toastForm = null;
-        this.tipToastForm = null;
     },
 
-    showToast(msg){
-        let self = this;
-        if(self.toastForm==null){
-            this._createUINode('toastForm',1000,function(node,index){
-                cc.Canvas.instance.node.addChild(node);
-                self.toastForm = node.getComponent('ToastForm');
-                node.zIndex = index;
-                self.toastForm.show(msg);
-            });
-        }else{
-            self.toastForm.show(msg);
-        }
-    },
-    showTipToast(msg){
-        let self = this;
-        if(self.tipToastForm==null){
-            this._createUINode('tipToast',2000,function(node,index){
-                cc.Canvas.instance.node.addChild(node);
-                self.tipToastForm = node.getComponent('TipToastForm');
-                node.zIndex = index;
-                self.tipToastForm.willShow(msg);
-                self.tipToastForm.show(msg);
-            });
-        }else{
-            self.tipToastForm.willShow(msg);
-            self.tipToastForm.show(msg);
-        }
-    },
     /**
      * 显示一个ui
      * @param {string} name  resources/UI目录下的预设名字 
