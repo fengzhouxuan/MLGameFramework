@@ -13,7 +13,7 @@ cc.Class({
         this.moduleName = 'entityPool';
         this._super();
 
-        this.entityPools = [];
+        this.entityPools = new ML.MLDictionary();
     },
 
     getOrCreatePool(name, size = 30, releaseInterval = 30) {
@@ -27,7 +27,7 @@ cc.Class({
     createEntityPool(name, size, releaseInterval) {
         let entityPool = new EntityPool();
         entityPool.init(name, size, releaseInterval);
-        this.entityPools.push(entityPool);
+        this.entityPools.add(name,entityPool);
         return entityPool;
     },
 
@@ -36,18 +36,12 @@ cc.Class({
     },
 
     _findEntityPool(name) {
-        for (let i = 0; i < this.entityPools.length; i++) {
-            let entityPool = this.entityPools[i];
-            if (entityPool.poolName === name) {
-                return entityPool;
-            }
-        }
-        return null;
+        return this.entityPools.valueForKey(name);
     },
 
     update(dt) {
-        for (let i = 0; i < this.entityPools.length; i++) {
-            let entityPool = this.entityPools[i];
+        for (let key in this.entityPools.data) {
+            let entityPool = this.entityPools.data[key];
             entityPool.onUpdate(dt);
         }
     },

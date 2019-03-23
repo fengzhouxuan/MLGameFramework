@@ -13,7 +13,7 @@ cc.Class({
     },
 
     start(){
-        this.schedule(this.sssss,0.3,2,1);
+        this.schedule(this.sssss,0.3,100,1);
     },
 
     sssss(){

@@ -44,8 +44,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.328441248125937,
-      "y": 0.328441248125937,
+      "x": 0.32819527736131937,
+      "y": 0.32819527736131937,
       "z": 1
     },
     "_quat": {
@@ -644,7 +644,7 @@
     "_enabled": true,
     "moduleName": "",
     "priority": 1000000,
-    "entityGroupNames": [],
+    "groups": [],
     "_id": "b1fPQGg/dNRK+3UQGYRlCm"
   },
   {

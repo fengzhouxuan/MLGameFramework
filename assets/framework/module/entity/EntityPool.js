@@ -10,7 +10,7 @@ cc.Class({
      * @param {Number} size 对象池大小，默认60
      * @param {Number} releaseInterval 对象池内对象释放的时间，默认30秒
      */
-    init(name, size = 60, releaseInterval = 30) {
+    init(name, size = 60, releaseInterval = 5) {
         this.poolName = name;
         this.size = size;
         this.releaseInterval = releaseInterval;
@@ -43,10 +43,11 @@ cc.Class({
      */
     put(entity) {
         if (this.entitys.length >= this.size) {
+            entity.node.destroy();
             return;
         }
         if (entity && this.entitys.indexOf(entity) === -1) {
-            entity._MLPool_putDate = Date.now();
+            entity._MLPool_putDate = ML.totalTime;
             this.entitys.push(entity);
         }
     },
@@ -75,19 +76,16 @@ cc.Class({
     _loopEntitysShouldRelease() {
         if (this.entitys.length == 0) return;
         //每次取出第0个判断是否过期，如果没过期则说明后面的都没过期
-        let nowDate = Date.now();
-        let out = false;
-        while (!out) {
-            if (this.entitys.length == 0) {
-                out = true;
-                break;
-            }
-            let firstEntity = this.entitys[0];
-            if (nowDate - firstEntity._MLPool_putDate >= this.releaseInterval * 1000) {
-                cc.js.array.remove(this.entitys, firstEntity);
-                firstEntity.node.destroy();
-            } else {
-                out = true;
+        let nowDate = ML.totalTime;
+
+        for (let index = 0; index <this.entitys.length; index++) {
+            let entityLogic = this.entitys[index];
+            if (nowDate - entityLogic._MLPool_putDate >= this.releaseInterval) {
+                cc.js.array.remove(this.entitys, entityLogic);
+                entityLogic.node.destroy();
+                index--;
+            }else{
+                return;
             }
         }
     },
