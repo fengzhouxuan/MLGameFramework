@@ -66,13 +66,27 @@ cc.Class({
     },
 
     hideEntity(entityLogic, data) {
-        entity.entityGroup.hideEntity(entityLogic, data);
+        let childrenEntityLogic = entityLogic.childrenEntityLogic;
+        for (let i = 0; i < childrenEntityLogic.length; i++) {
+            let logic = childrenEntityLogic[i];
+            this.hideEntity(logic, data);
+        }
+        this.detachedEntity(entityLogic);
+        entityLogic.entityGroup.hideEntity(entityLogic, data);
     },
 
+    /**
+     * 附加子物体
+     * @param {*} entityLogic 子物体
+     * @param {*} parentEntityLogic 父物体 
+     * @param {*} targetNode 
+     * @param {*} userData 
+     */
     attachToEntity(entityLogic, parentEntityLogic, targetNode = null, userData = null) {
         if (targetNode == null) {
             targetNode = parentEntityLogic.node;
         }
+        this.detachedEntity(entityLogic);
         //父
         parentEntityLogic.childrenEntityLogic.push(entityLogic);
         parentEntityLogic.onAttached(entityLogic, targetNode, userData);
@@ -82,12 +96,22 @@ cc.Class({
         entityLogic.onAttachTo(parentEntityLogic, targetNode, userData);
     },
 
+    /**
+     * 从父物体上解除子物体
+     * @param {*} entityLogic 子物体
+     * @param {*} userData 
+     */
     detachedEntity(entityLogic, userData = null) {
         let parentEntityLogic = entityLogic.parentEntityLogic;
+        if (!parentEntityLogic) {
+            return;
+        }
         //父
         cc.js.array.remove(parentEntityLogic.childrenEntityLogic, entityLogic);
         parentEntityLogic.onDetached(entityLogic, userData);
         //子
-        
+        entityLogic.parentEntityLogic = null;
+        entityLogic.node.parent = null;
+        entityLogic.onDetachFrom(parentEntityLogic, userData);
     },
 });
