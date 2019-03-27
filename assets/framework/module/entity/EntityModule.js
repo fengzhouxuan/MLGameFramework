@@ -38,7 +38,7 @@ cc.Class({
         if (this.groups.length == 0) {
             //创建默认实体组
             let entityGroupData = new EntityGroupData();
-            entityGroupData.name = 'Default';
+            entityGroupData.groupName = 'Default';
             this.createEntityGroup(entityGroupData);
         }
         for (let i = 0; i < this.groups.length; i++) {
@@ -49,7 +49,7 @@ cc.Class({
 
     createEntityGroup(entityGroupData) {
         let group = new EntityGroup(entityGroupData);
-        this.entityGroups.add(entityGroupData.name, group);
+        this.entityGroups.add(entityGroupData.groupName, group);
     },
 
     getEntityGroup(name) {
